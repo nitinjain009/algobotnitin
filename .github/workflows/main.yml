@@ -1,20 +1,16 @@
-import os
-from telegram import Bot
+name: Send Hello to Telegram Bot
 
-def send_test_message():
-    """Sends a test message to the Telegram chat."""
-    telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+on:
+  workflow_dispatch: # Allows you to manually trigger the workflow
 
-    if telegram_bot_token and telegram_chat_id:
-        try:
-            bot = Bot(token=telegram_bot_token)
-            bot.send_message(chat_id=telegram_chat_id, text="Test message from Python script.")
-            print("Test message sent successfully!")
-        except Exception as e:
-            print(f"Error sending test message: {e}")
-    else:
-        print("Telegram bot token or chat ID is missing.")
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Hello
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c 'from telegram import Bot; bot = Bot(token="${TELEGRAM_BOT_TOKEN}"); bot.send_message(chat_id="${TELEGRAM_CHAT_ID}", text="Hello");'
 
-if __name__ == "__main__":
-    send_test_message()
