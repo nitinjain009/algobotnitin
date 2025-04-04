@@ -19,7 +19,7 @@ jobs:
 
       - name: Send Hello
         env:
-          TELEGRAM_BOT_TOKEN: 7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU # Use GitHub secret
+          TELEGRAM_BOT_TOKEN: 7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU
           TELEGRAM_CHAT_ID: 711856868
         run: |
           python -c "import asyncio; from telegram import Bot; async def main(): bot = Bot(token='7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU'); await bot.send_message(chat_id='711856868', text='Hello'); await asyncio.sleep(1); asyncio.run(main())"
