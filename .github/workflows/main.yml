@@ -1,7 +1,7 @@
 name: Send Hello to Telegram Bot
 
 on:
-  workflow_dispatch: # Allows you to manually trigger the workflows
+  workflow_dispatch: # Allows you to manually trigger the workflow
 
 jobs:
   send_message:
