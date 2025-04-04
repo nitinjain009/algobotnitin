@@ -1,0 +1,40 @@
+//@version=6
+indicator("Chandelier Exit Signals", overlay=true)
+
+// Input parameters
+atrPeriod = input.int(1, title="ATR Period")
+atrMultiplier = input.float(2.0, title="ATR Multiplier")
+
+// Calculate ATR
+atr = ta.atr(atrPeriod)
+
+// Calculate Chandelier Exit
+longStop = ta.highest(high, atrPeriod) - atrMultiplier * atr
+shortStop = ta.lowest(low, atrPeriod) + atrMultiplier * atr
+
+var float longStopPrev = na
+var float shortStopPrev = na
+
+if (na(longStopPrev) or close > longStopPrev)
+    longStop := longStop
+else
+    longStop := math.max(longStop, longStopPrev)
+
+if (na(shortStopPrev) or close < shortStopPrev)
+    shortStop := shortStop
+else
+    shortStop := math.min(shortStop, shortStopPrev)
+
+longStopPrev := longStop
+shortStopPrev := shortStop
+
+// Plot Chandelier Exit
+plot(longStop, color=color.green, title="Chandelier Long Stop")
+plot(shortStop, color=color.red, title="Chandelier Short Stop")
+
+// Buy and Sell Signals
+buySignal = ta.crossover(close, longStop)
+sellSignal = ta.crossunder(close, shortStop)
+
+plotshape(series=buySignal, location=location.belowbar, color=color.green, style=shape.labelup, title="Buy Signal", text="BUY")
+plotshape(series=sellSignal, location=location.abovebar, color=color.red, style=shape.labeldown, title="Sell Signal", text="SELL")
