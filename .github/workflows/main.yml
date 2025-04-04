@@ -24,7 +24,3 @@ jobs:
         run: |
           python -c "
 
-    await bot.send_message(chat_id='$TELEGRAM_CHAT_ID', text='Hello')
-
-asyncio.run(send_message())
-          "
