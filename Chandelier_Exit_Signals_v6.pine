@@ -1,40 +1,32 @@
-//@version=6
-indicator("Chandelier Exit Signals", overlay=true)
+//@version=5
+indicator("Chandelier Entry/Exit Strategy", overlay=true)
 
-// Input parameters
-atrPeriod = input.int(1, title="ATR Period")
+// Inputs for Chandelier Exit settings
+atrPeriod = input(1, title="ATR Period")
 atrMultiplier = input.float(2.0, title="ATR Multiplier")
 
-// Calculate ATR
-atr = ta.atr(atrPeriod)
+// 15-minute timeframe settings
+timeframe = input.timeframe("15", title="Timeframe")
 
-// Calculate Chandelier Exit
-longStop = ta.highest(high, atrPeriod) - atrMultiplier * atr
-shortStop = ta.lowest(low, atrPeriod) + atrMultiplier * atr
+// Calculate ATR and Chandelier levels
+atr = request.security(syminfo.tickerid, timeframe, ta.atr(atrPeriod))
+longExit = request.security(syminfo.tickerid, timeframe, ta.highest(high, atrPeriod)) - (atrMultiplier * atr)
+shortExit = request.security(syminfo.tickerid, timeframe, ta.lowest(low, atrPeriod)) + (atrMultiplier * atr)
 
-var float longStopPrev = na
-var float shortStopPrev = na
+// Plot the levels
+plot(longExit, color=color.green, title="Chandelier Long Exit")
+plot(shortExit, color=color.red, title="Chandelier Short Exit")
 
-if (na(longStopPrev) or close > longStopPrev)
-    longStop := longStop
-else
-    longStop := math.max(longStop, longStopPrev)
+// Entry and exit conditions
+buySignal = ta.crossover(close, longExit)
+sellSignal = ta.crossunder(close, shortExit)
 
-if (na(shortStopPrev) or close < shortStopPrev)
-    shortStop := shortStop
-else
-    shortStop := math.min(shortStop, shortStopPrev)
+// Plot buy and sell signals on the chart
+plotshape(buySignal, style=shape.labelup, location=location.belowbar, color=color.new(color.green, 0), text="BUY")
+plotshape(sellSignal, style=shape.labeldown, location=location.abovebar, color=color.new(color.red, 0), text="SELL")
 
-longStopPrev := longStop
-shortStopPrev := shortStop
-
-// Plot Chandelier Exit
-plot(longStop, color=color.green, title="Chandelier Long Stop")
-plot(shortStop, color=color.red, title="Chandelier Short Stop")
-
-// Buy and Sell Signals
-buySignal = ta.crossover(close, longStop)
-sellSignal = ta.crossunder(close, shortStop)
-
-plotshape(series=buySignal, location=location.belowbar, color=color.green, style=shape.labelup, title="Buy Signal", text="BUY")
-plotshape(series=sellSignal, location=location.abovebar, color=color.red, style=shape.labeldown, title="Sell Signal", text="SELL")
+// Strategy logic for execution
+strategy.entry("Buy", strategy.long, when=buySignal)
+strategy.close("Buy", when=sellSignal)
+strategy.entry("Sell", strategy.short, when=sellSignal)
+strategy.close("Sell", when=buySignal)
