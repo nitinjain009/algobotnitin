@@ -1,7 +1,7 @@
 name: Send Hello to Telegram Bot
 
 on:
-  workflow_dispatch: # Allows you to manually trigger the workflow
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   send_message:
@@ -19,7 +19,16 @@ jobs:
 
       - name: Send Hello
         env:
-          TELEGRAM_BOT_TOKEN: 7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU
-          TELEGRAM_CHAT_ID: 711856868
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python -c "import asyncio; from telegram import Bot; async def main(): bot = Bot(token='7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU'); await bot.send_message(chat_id='711856868', text='Hello'); await asyncio.sleep(1); asyncio.run(main())"
+          python -c "
+import asyncio
+from telegram import Bot
+
+async def send_message():
+    bot = Bot(token='$TELEGRAM_BOT_TOKEN')
+    await bot.send_message(chat_id='$TELEGRAM_CHAT_ID', text='Hello')
+
+asyncio.run(send_message())
+          "
