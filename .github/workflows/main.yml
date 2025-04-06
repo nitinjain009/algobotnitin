@@ -1,5 +1,4 @@
 name: Send Telegram Test Message (INSECURE EXAMPLE - DO NOT USE)
-
 on: [push]
 
 jobs:
