@@ -16,15 +16,26 @@ jobs:
       - name: Install python-telegram-bot
         run: pip install python-telegram-bot
 
-      - name: Send Test Telegram Message (INSECURE - but fixing async)
+      - name: Send Test Telegram Message (with Error Handling)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python -c 'import asyncio
 from telegram import Bot
+from telegram.error import TelegramError  # Import specific TelegramError
 
-async def send_test_message():
-    bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU")
-    chat_id = "711856868"
-    await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message (INSECURE EXAMPLE - FIXED ASYNC)")
+async def send_test_message(token, chat_id):
+    bot = Bot(token=token)
+    try:
+        message = await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message with Error Handling")
+        print(f"Telegram message sent successfully. Message ID: {message.message_id}")
+    except TelegramError as e:
+        print(f"Error sending Telegram message: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
+if __name__ == "__main__":
+    asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
 if __name__ == "__main__":
     asyncio.run(send_test_message())'
