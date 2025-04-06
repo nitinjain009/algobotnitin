@@ -20,8 +20,4 @@ jobs:
         run: |
           $ python3 send-message-to-telegram.py
 
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
-if __name__ == "__main__":
-    asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
+  
