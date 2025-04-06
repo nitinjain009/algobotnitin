@@ -1,5 +1,5 @@
 name: Send Telegram Test Message
-
+pip install yfinance
 on: [push]
 
 jobs:
