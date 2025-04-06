@@ -1,7 +1,22 @@
- # Send a test message to Telegram
-      - name: Send Test Telegram Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+name: Send Telegram Test Message (INSECURE EXAMPLE - DO NOT USE)
+
+on: [push]
+
+jobs:
+  send_test_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install python-telegram-bot
+        run: pip install python-telegram-bot
+
+      - name: Send Test Telegram Message (INSECURE)
         run: |
-          python -c 'from telegram import Bot; bot = Bot(token="${TELEGRAM_BOT_TOKEN}"); bot.send_message(chat_id="${TELEGRAM_CHAT_ID}", text="GitHub Actions Test Message");'
+          python -c 'from telegram import Bot; bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU"); bot.send_message(chat_id="711856868", text="GitHub Actions Test Message (INSECURE EXAMPLE)");'
