@@ -17,6 +17,15 @@ jobs:
       - name: Install python-telegram-bot
         run: pip install python-telegram-bot
 
-      - name: Send Test Telegram Message (INSECURE)
+      - name: Send Test Telegram Message (INSECURE - but fixing async)
         run: |
-          python -c 'from telegram import Bot; bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU"); bot.send_message(chat_id="711856868", text="GitHub Actions Test Message (INSECURE EXAMPLE)");'
+          python -c 'import asyncio
+from telegram import Bot
+
+async def send_test_message():
+    bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU")
+    chat_id = "711856868"
+    await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message (INSECURE EXAMPLE - FIXED ASYNC)")
+
+if __name__ == "__main__":
+    asyncio.run(send_test_message())'
