@@ -7,16 +7,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-
       - name: Install python-telegram-bot
-        run: pip install python-telegram-bot
-
-   - name: Install python-telegram-bot
         run: pip install python-telegram-bot
       - name: Send Test Telegram Message (with Error Handling)
         env:
@@ -39,6 +34,3 @@ async def send_test_message(token, chat_id):
 
 if __name__ == "__main__":
     asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
-    asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
-if __name__ == "__main__":
-    asyncio.run(send_test_message())'
