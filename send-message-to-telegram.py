@@ -1,13 +1,11 @@
 # send-message-to-telegram.py
 # by www.ShellHacks.com
-pip install yfinance
+
 import requests
 import datetime
 import yfinance as yf
 import os  # Import the os module for environment variables
 from telegram import Bot  # Import the Telegram Bot library
-
-
 
 def send_telegram_alert(message, alert_type):
     """
