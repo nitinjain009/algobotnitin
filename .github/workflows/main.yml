@@ -1,23 +1,26 @@
-name: Send Telegram Test Message (INSECURE EXAMPLE - DO NOT USE)
+name: Send Telegram Test Message
+
 on: [push]
 
 jobs:
-  send_test_message:
+  send_telegram:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Install python-telegram-bot
-        run: pip install python-telegram-bot
-      - name: Send Test Telegram Message (with Error Handling)
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-telegram-bot requests  # Install both libraries
+
+      - name: Execute Telegram Sending Script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python3 send-message-to-telegram.py
-
-  
+        run: python3 send-message-to-telegram.py
