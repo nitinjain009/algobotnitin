@@ -1,6 +1,6 @@
 # send-message-to-telegram.py
 # by www.ShellHacks.com
-
+pip install yfinance
 import requests
 import datetime
 import yfinance as yf
