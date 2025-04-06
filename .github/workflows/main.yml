@@ -18,17 +18,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python -c 'import asyncio
-from telegram import Bot
-from telegram.error import TelegramError  # Import specific TelegramError
+          $ python3 send-message-to-telegram.py
 
-async def send_test_message(token, chat_id):
-    bot = Bot(token=token)
-    try:
-        message = await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message with Error Handling")
-        print(f"Telegram message sent successfully. Message ID: {message.message_id}")
-    except TelegramError as e:
-        print(f"Error sending Telegram message: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
