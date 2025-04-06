@@ -1,6 +1,7 @@
-- name: Send Hello
-  env:
-    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-  run: |
-    python <<EOF
+ # Send a test message to Telegram
+      - name: Send Test Telegram Message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c 'from telegram import Bot; bot = Bot(token="${TELEGRAM_BOT_TOKEN}"); bot.send_message(chat_id="${TELEGRAM_CHAT_ID}", text="GitHub Actions Test Message");'
