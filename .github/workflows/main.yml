@@ -16,6 +16,8 @@ jobs:
       - name: Install python-telegram-bot
         run: pip install python-telegram-bot
 
+   - name: Install python-telegram-bot
+        run: pip install python-telegram-bot
       - name: Send Test Telegram Message (with Error Handling)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -36,6 +38,7 @@ async def send_test_message(token, chat_id):
         print(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
+    asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
     asyncio.run(send_test_message("${TELEGRAM_BOT_TOKEN}", "${TELEGRAM_CHAT_ID}"))'
 if __name__ == "__main__":
     asyncio.run(send_test_message())'
